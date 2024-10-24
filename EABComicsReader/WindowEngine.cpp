@@ -14,6 +14,11 @@ void WindowEngine::initWindow()
 	
 }
 
+
+void WindowEngine::loadComic() {
+	loadComicDialog(); // Call the dialog method to load the comic
+}
+
 void WindowEngine::loadComic(const std::string& path)
 {
 	//clear existing pages
@@ -60,6 +65,14 @@ void WindowEngine::loadComic(const std::string& path)
 		}
 	}
 	*/
+}
+
+void WindowEngine::loadComicDialog()
+{
+	std::wstring path = FileDialog::openFile();
+	if (!path.empty()) {
+		loadComic(std::string(path.begin(), path.end())); // Convert wstring to string
+	}
 }
 
 void WindowEngine::updateView() {

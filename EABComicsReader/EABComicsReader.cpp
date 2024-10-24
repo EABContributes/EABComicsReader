@@ -9,6 +9,8 @@ int main()
     //init windowEngine
     WindowEngine windowEngine;
 
+    /*
+    * manual version of comic loading
     // Get user input for .cbz file path
     std::string comicPath;
     std::cout << "Enter the path to your .cbz file: ";
@@ -16,7 +18,9 @@ int main()
 
     // Load the comic
     windowEngine.loadComic(comicPath);
+    */
 
+    windowEngine.loadComic();
 
     while (windowEngine.running())
     {

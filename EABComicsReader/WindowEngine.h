@@ -7,6 +7,8 @@
 #include <filesystem>
 #include <vector>
 #include "miniz.h"
+#include "FileDialog.h"
+
 namespace fs = std::filesystem;
 
 enum class ScaleMode {
@@ -56,6 +58,8 @@ public:
 	void nextPageset();
 	void lastPageset();
 	void setScaleMode(ScaleMode mode);
+	void loadComic();
 	void loadComic(const std::string& path); // New function
+	void loadComicDialog();
 };
 

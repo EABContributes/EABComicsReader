@@ -142,10 +142,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EABComicsReader.cpp" />
+    <ClCompile Include="FileDialog.cpp" />
     <ClCompile Include="miniz.c" />
     <ClCompile Include="WindowEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileDialog.h" />
     <ClInclude Include="miniz.h" />
     <ClInclude Include="WindowEngine.h" />
   </ItemGroup>
