@@ -48,6 +48,7 @@ public:
 
 	//Funcs
 	void update();
+	void updateView();
 	void render();
 
 

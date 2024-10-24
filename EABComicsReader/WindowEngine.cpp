@@ -62,30 +62,48 @@ void WindowEngine::loadComic(const std::string& path)
 	*/
 }
 
+void WindowEngine::updateView() {
+	sf::View view = window->getDefaultView();
+	view.setSize(window->getSize().x, window->getSize().y);
+	view.setCenter(window->getSize().x / 2.f, window->getSize().y / 2.f);
+	window->setView(view);
+}
+
 void WindowEngine::drawCurrentPage()
 {
 	if (!pages.empty() && currentPage < pages.size()) {
 		sf::Sprite sprite;
 		sprite.setTexture(pages[currentPage]); // Set the current page texture
-		sprite.setPosition(0, 0); // You can adjust this to center the image or set a margin
 
-		//switch statement to set scaling based on scaleMode
+		// Get the original texture size
+		sf::Vector2u textureSize = pages[currentPage].getSize();
+
+		// Calculate scale factors
+		float scaleX = window->getSize().x / static_cast<float>(textureSize.x);
+		float scaleY = window->getSize().y / static_cast<float>(textureSize.y);
+
+		// Apply scaling based on the chosen mode
 		switch (scaleMode) {
 		case ScaleMode::Width:
-			sprite.setScale(static_cast<float>(this->window->getSize().x) / sprite.getLocalBounds().width, 1.f);
+			sprite.setScale(scaleX, scaleX);
 			break;
 		case ScaleMode::Height:
-			sprite.setScale(1.f, static_cast<float>(this->window->getSize().y) / sprite.getLocalBounds().height);
+			sprite.setScale(scaleY, scaleY);
 			break;
 		case ScaleMode::Both:
-			sprite.setScale(
-				static_cast<float>(this->window->getSize().x) / sprite.getLocalBounds().width,
-				static_cast<float>(this->window->getSize().y) / sprite.getLocalBounds().height
-			);
+			float scale = std::min(scaleX, scaleY);
+			sprite.setScale(scale, scale);
 			break;
 		}
 
-		this->window->draw(sprite); // Draw the current page
+		// Center the sprite based on the window size after scaling
+		sprite.setPosition(
+			(window->getSize().x - sprite.getGlobalBounds().width) / 2,
+			(window->getSize().y - sprite.getGlobalBounds().height) / 2
+		);
+
+		// Draw the sprite
+		window->draw(sprite);
 	}
 }
 
@@ -108,7 +126,6 @@ const bool WindowEngine::running() const
 
 void WindowEngine::update()
 {
-
 	//event polling
 	while (this->window->pollEvent(this->ev))
 	{
@@ -116,6 +133,9 @@ void WindowEngine::update()
 		{
 		case sf::Event::Closed:
 			this->window->close();
+			break;
+		case sf::Event::Resized:
+			updateView();
 			break;
 		case sf::Event::KeyPressed:
 			switch (this->ev.key.code) 
